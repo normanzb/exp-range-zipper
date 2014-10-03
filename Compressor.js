@@ -1,6 +1,6 @@
 var Node = require('./Node');
 
-function data2SearchTree( data, modBy ){
+function data2SearchTree( data, base ){
     var cur;
     var start;
     var end;
@@ -33,8 +33,8 @@ function data2SearchTree( data, modBy ){
         
         // extract the tree from current range
         do {
-            startDigit = start % modBy;
-            endDigit = end % modBy;
+            startDigit = start % base;
+            endDigit = end % base;
 
             if ( node !== null ) {
                 prev = node;
@@ -46,8 +46,8 @@ function data2SearchTree( data, modBy ){
                 node.children.push( prev );
             }
 
-            start = Math.floor( ( start - startDigit ) / modBy );
-            end = Math.floor( ( end - endDigit ) / modBy );
+            start = Math.floor( ( start - startDigit ) / base );
+            end = Math.floor( ( end - endDigit ) / base );
         }
         while ( end > 0 );
 
@@ -68,12 +68,12 @@ function data2SearchTree( data, modBy ){
     return tree;
 }
 
-function node2CompactData( node, modBy ) {
+function node2CompactData( node, base ) {
     var ret = '';
     if ( node.data ) {
         ret += node.data[0] == node.data[1] ? 
-        node.data[0].toString(modBy) : 
-        node.data[0].toString(modBy) + node.data[1].toString(modBy);
+        node.data[0].toString(base) : 
+        node.data[0].toString(base) + node.data[1].toString(base);
     }
 
     if ( node.children.length > 0 ) {
@@ -95,21 +95,21 @@ function node2CompactData( node, modBy ) {
     return ret + '';
 }
 
-function tree2CompactData( tree, modBy ) {
-    return node2CompactData( tree, modBy );
+function tree2CompactData( tree, base ) {
+    return node2CompactData( tree, base );
 }
 
 function Compressor( options ) {
     options = options || {};
-    this.modBy = options.modBy || 36;
+    this.base = options.base || 36;
 }
 
 Compressor.prototype = {
     constructor: Compressor,
     compress: function( data ) {
         
-        var tree = data2SearchTree(data, this.modBy);
-        return tree2CompactData(tree, this.modBy);
+        var tree = data2SearchTree(data, this.base);
+        return tree2CompactData(tree, this.base);
 
     }
 };
