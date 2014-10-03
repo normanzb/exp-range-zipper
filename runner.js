@@ -7,18 +7,22 @@ var c = new Compressor({
     base: base
 });
 
-var result = c.compress(test);
+console.log('Original Array Length:', test.length);
+console.log('Compressing...');
 
+var result = c.compress(test);
 var jsonOriginal = JSON.stringify(test).replace(/\"/g,'');
 var jsonResult = JSON.stringify(result);
 
-console.log(jsonOriginal.length);
-console.log(jsonResult.length);
-// console.log(jsonResult);
+console.log('Original JSON Text Length:', jsonOriginal.length);
+console.log('Compressed Text Length:', jsonResult.length);
+
+console.log('Extract...');
 
 var e = new Extractor({
     base: base
-})
+});
+
 var recovered = e.extract(result);
 var jsonRecovered = JSON.stringify(recovered).replace(/\"/g,'');
 
@@ -80,5 +84,5 @@ function objectCompare(a, b) {
 }
 
 // console.log('recovered json', recovered);
-console.log('recovered length compare', recovered.length, test.length);
-console.log('recovered array compare', arrayCompare(test, recovered));
+console.log('Extracted Array Length:', recovered.length);
+console.log('Content Compare Result: ', arrayCompare(test, recovered) ? 'Matched' : 'Unmatched' );
