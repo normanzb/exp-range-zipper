@@ -4,6 +4,7 @@ function Node(data) {
 
     me.data = data;
     me.children = [];
+    me.parent = null;
     me._length = 1;
     me._index = null;
 
@@ -14,6 +15,8 @@ function Node(data) {
             if ( !(node instanceof Node) ) {
                 throw new Error('Must be instance of Node()');
             }
+
+            node.parent = me;
 
             var len = node.length;
             
@@ -29,6 +32,8 @@ function Node(data) {
     me.children.pop = function(  ) {
         var tmp = me.children[me.children.length - 1];
         var len = tmp.length;
+
+        tmp.parent = null;
 
         if ( len + 1 >= me._length ) {
             me._length = 0;
@@ -157,7 +162,6 @@ Node.prototype = {
         return ret;
     },
     dataEqual: function(node) {
-        var ret = true;
 
         if ( this.data == null ) {
             if ( node.data == null ) {
@@ -173,26 +177,20 @@ Node.prototype = {
                 continue;
             }
             if ( this.data[key] !== node.data[key] ) {
-                ret = false;
-                break;
+                return false;
             }
         }
 
-        if ( ret === true ) {
-
-            for(var key in node.data) {
-                if ( !node.data.hasOwnProperty(key) ) {
-                    continue;
-                }
-                if ( !(key in this.data) ) {
-                    ret = false;
-                    break;
-                }
+        for(var key in node.data) {
+            if ( !node.data.hasOwnProperty(key) ) {
+                continue;
             }
-
+            if ( !(key in this.data) ) {
+                return false;
+            }
         }
 
-        return ret;
+        return true;
     },
     traverse: function(func) {
         func.call(this);
