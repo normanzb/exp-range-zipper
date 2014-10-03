@@ -159,6 +159,15 @@ Node.prototype = {
     dataEqual: function(node) {
         var ret = true;
 
+        if ( this.data == null ) {
+            if ( node.data == null ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         for(var key in this.data) {
             if ( !this.data.hasOwnProperty(key) ) {
                 continue;
