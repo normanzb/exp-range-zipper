@@ -69,18 +69,30 @@ function data2SearchTree( data, modBy ){
 }
 
 function node2CompactData( node, modBy ) {
-    var ret = '[';
+    var ret = '';
     if ( node.data ) {
         ret += node.data[0] == node.data[1] ? 
         node.data[0].toString(modBy) : 
         node.data[0].toString(modBy) + node.data[1].toString(modBy);
     }
 
-    for( var l = node.children.length; l--;) {
-        ret += ',' + node2CompactData(node.children[l]);
+    if ( node.children.length > 0 ) {
+        ret += '[';
     }
 
-    return ret + ']';
+    for( var l = node.children.length; l--;) {
+
+        if ( l < node.children.length - 1 ) {
+            ret += ',';       
+        }
+        ret += node2CompactData(node.children[l]);
+    }
+
+    if ( node.children.length > 0 ) {
+        ret += ']';
+    }
+
+    return ret + '';
 }
 
 function tree2CompactData( tree, modBy ) {

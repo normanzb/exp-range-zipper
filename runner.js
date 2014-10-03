@@ -4,9 +4,10 @@ var Compressor = require('./Compressor');
 var c = new Compressor({
     modBy: 10
 });
-var result = c.compress(data.real);
+var test = data.real;
+var result = c.compress(test);
 var jsonResult = JSON.stringify(result);
-var jsonOriginal = JSON.stringify(data.real).replace(/\"/g,'');
+var jsonOriginal = JSON.stringify(test).replace(/\"/g,'');
 
 console.log(jsonOriginal.length);
 console.log(jsonResult.length);
